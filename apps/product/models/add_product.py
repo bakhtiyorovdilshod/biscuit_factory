@@ -7,7 +7,7 @@ from apps.user.models.account import Account
 
 class AddProduct(models.Model):
     type_currency = (
-        ('SO\'M', 1),
+        ('SOM', 1),
         ('USD', 2)
     )
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
@@ -15,8 +15,10 @@ class AddProduct(models.Model):
     currency = models.CharField(max_length=10, choices=type_currency)
     price = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
-    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE)
-    warehouseman = models.ForeignKey(Account, on_delete=models.CASCADE)
+    supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, blank=True, null=True)
+    warehouseman = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def set_total_price(self):
         self.total_price = self.quantity * self.price

@@ -40,6 +40,11 @@ class ProductModelViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
+    def retrieve(self, request, pk):
+        product = self.get_object(pk)
+        serializer = ProductModelSerializer(product, many=False)
+        return Response(serializer.data)
+
 
 
 

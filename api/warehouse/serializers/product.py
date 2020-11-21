@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from apps.warehouse.models.product import WareHouseProduct
+from api.product.serializers.product import ProductModelSerializer
 
 
 class WareHouseProductCreateModelSerializer(serializers.ModelSerializer):
@@ -20,3 +21,19 @@ class WareHouseProductCreateModelSerializer(serializers.ModelSerializer):
         product, _ = WareHouseProduct.objects.get_or_create(
             product=product, **validated_data)
         return product
+
+
+class WareHouseProductDetailModelSerializer(serializers.ModelSerializer):
+    product = ProductModelSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = WareHouseProduct
+        fields = [
+            'product',
+            'quantity',
+            'total_price',
+            'average_price',
+            'unit_of_measurement',
+            'currency',
+            'created_date'
+        ]

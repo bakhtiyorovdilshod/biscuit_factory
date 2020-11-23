@@ -1,6 +1,6 @@
 from django.db import models
 from .product import Product
-from .supplier import Supplier
+from apps.supplier.models.supplier import Supplier
 
 from apps.user.models.account import Account
 

@@ -1,16 +1,7 @@
 from rest_framework.views import APIView
-from apps.warehouse.models.product import WareHouseProduct
 from apps.warehouse.models.biscuit import WareHouseBiscuit
-from api.warehouse.serializers.product import WareHouseProductDetailModelSerializer
 from api.warehouse.serializers.biscuit import WareHouseBiscuitDetailModelSerializer
 from rest_framework.response import Response
-
-
-class WareHouseProductsAPIView(APIView):
-    def get(self, request):
-        queryset = WareHouseProduct.objects.all()
-        serializer = WareHouseProductDetailModelSerializer(queryset, many=True)
-        return Response(serializer.data)
 
 
 class WareHouseBiscuitAPIView(APIView):

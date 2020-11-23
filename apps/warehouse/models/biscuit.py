@@ -1,9 +1,10 @@
 from django.db import models
-from apps.product.models.product import Product
+
+from apps.biscuit.models.biscuit import Biscuit
 
 
-class WareHouseProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+class WareHouseBiscuit(models.Model):
+    biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
     total_price = models.PositiveIntegerField(default=0)
     average_price = models.PositiveIntegerField(default=0)
@@ -16,4 +17,4 @@ class WareHouseProduct(models.Model):
         self.average_price = float(self.total_price/self.quantity)
 
     def __str__(self):
-        return str(self.product)
+        return str(self.biscuit)

@@ -1,2 +1,2 @@
-from .product import WareHouseProduct
+from .product import WareHouseProduct, WareHouseManufacturedProduct
 from .biscuit import WareHouseBiscuit

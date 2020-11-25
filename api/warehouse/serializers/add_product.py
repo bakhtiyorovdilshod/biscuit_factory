@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from apps.warehouse.models.product import WareHouseProduct
+from apps.warehouse.models.product import WareHouseProduct, WareHouseManufacturedProduct
 
 
 class ProductAddUpdateModelSerializer(ModelSerializer):
@@ -21,3 +21,15 @@ class ProductFullUpdateModelSerializer(ModelSerializer):
             'product',
             'quantity'
         ]
+
+
+class ManufacturedProductAddUpdateModelSerializer(ModelSerializer):
+    class Meta:
+        model = WareHouseManufacturedProduct
+        fields = [
+            'quantity'
+        ]
+
+    def update(self, instance, validated_data):
+        instance.quantity += validated_data.get('quantity', instance.quantity)
+        return instance

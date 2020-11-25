@@ -1,6 +1,8 @@
 from rest_framework.serializers import ModelSerializer
-from apps.product.models.add_product import AddProduct
-from api.product.serializers.product import ProductModelSerializer
+
+from apps.product.models import ManufacturedProduct
+from apps.product.models.add_product import AddProduct, AddManufacturedProduct
+from api.product.serializers.product import ProductModelSerializer, ManufacturedProductModelSerializer
 
 
 class ProductAddListModelSerializer(ModelSerializer):
@@ -34,6 +36,43 @@ class ProductAddDetailModelSerializer(ModelSerializer):
 class ProductUpdateModelSerializer(ModelSerializer):
     class Meta:
         model = AddProduct
+        fields = [
+            'product',
+            'quantity',
+            'price'
+        ]
+
+
+class ManufacturedProductAddListModelSerializer(ModelSerializer):
+    class Meta:
+        model = AddManufacturedProduct
+        fields = [
+            'product',
+            'quantity',
+            'price'
+        ]
+
+
+class ManufacturedProductAddDetailModelSerializer(ModelSerializer):
+    product = ManufacturedProductModelSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = AddManufacturedProduct
+        fields = [
+            'id',
+            'product',
+            'quantity',
+            'price',
+            'total_price',
+            'supplier',
+            'warehouseman',
+            'created_date'
+        ]
+
+
+class ManufacturedProductUpdateModelSerializer(ModelSerializer):
+    class Meta:
+        model = AddManufacturedProduct
         fields = [
             'product',
             'quantity',

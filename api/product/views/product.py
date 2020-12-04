@@ -1,6 +1,7 @@
 from rest_framework import viewsets
 from apps.product.models.product import Product, ManufacturedProduct
-from api.product.serializers.product import ProductModelSerializer, ManufacturedProductModelSerializer
+from api.product.serializers.product import ProductModelSerializer, ManufacturedProductModelSerializer, \
+    ProductDetailSerializer
 from rest_framework.permissions import IsAuthenticated
 from api.warehouse.serializers.product import WareHouseProductCreateModelSerializer, \
     WareHouseManufacturedProductCreateModelSerializer
@@ -50,7 +51,12 @@ class ProductModelViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, pk):
         product = self.get_object(pk)
-        serializer = ProductModelSerializer(product, many=False)
+        serializer = ProductDetailSerializer(product, many=False)
+        return Response(serializer.data)
+
+    def list(self, request):
+        products = Product.objects.all()
+        serializer = ProductDetailSerializer(products, many=True)
         return Response(serializer.data)
 
 

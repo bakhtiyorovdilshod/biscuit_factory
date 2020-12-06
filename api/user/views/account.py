@@ -7,6 +7,7 @@ from django.contrib.auth import authenticate
 from api.user.serializers.user import AccountSerializer
 
 from api.user.utils.role import account_role
+from apps.user.models import Account
 
 User = get_user_model()
 
@@ -58,3 +59,28 @@ class LoginUserAPIView(APIView):
                 'is_chief_specialist': user.is_chief_specialist
             }
             return Response({'token': token.key, 'user_id': user.id, 'role': role})
+
+
+class FilterUserAPIView(APIView):
+    def get(self, request, *args, **kwargs):
+        role = request.query_params.get('role', None)
+        if role == 'staff':
+            accounts = Account.objects.filter(user__is_staff=True)
+        elif role == 'director':
+            accounts = Account.objects.filter(user__is_director=True)
+        elif role == 'accountant':
+            accounts = Account.objects.filter(user__is_accountant=True)
+        elif role == 'warehouseman':
+            accounts = Account.objects.filter(user__is_warehouseman=True)
+        elif role == 'driver':
+            accounts = Account.objects.filter(user__is_driver=True)
+        elif role == 'manager':
+            accounts = Account.objects.filter(user__is_manager=True)
+        elif role == 'chief_technological_man':
+            accounts = Account.objects.filter(user__is_chief_technological_man=True)
+        elif role =='chief_specialist':
+            accounts = Account.objects.filter(user__is_chief_specialist=True)
+        else:
+            return Response({'error': 404})
+        serializer = AccountSerializer(accounts, many=True)
+        return Response(serializer.data)

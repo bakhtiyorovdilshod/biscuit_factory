@@ -1,5 +1,5 @@
 from django.db import models
-from apps.product.models.product import Product, ManufacturedProduct
+from apps.product.models.product import Product, ManufacturedProduct, ManufacturedProductPriceList
 
 
 class WareHouseProduct(models.Model):
@@ -14,6 +14,12 @@ class WareHouseProduct(models.Model):
 
     def set_average_price(self):
         self.average_price = float(self.total_price/self.quantity)
+
+    def add_quantity(self, value):
+        self.quantity += value
+
+    def subtract_quantity(self, value):
+        self.quantity -= value
 
     def __str__(self):
         return str(self.product)
@@ -30,6 +36,16 @@ class WareHouseManufacturedProduct(models.Model):
 
     def set_average_price(self):
         self.average_price = float(self.total_price/self.quantity)
+
+    def add_quantity(self, value):
+        self.quantity += value
+
+    def subtract_quantity(self, value):
+        self.quantity -= value
+
+    def set_total_price(self):
+        price = ManufacturedProductPriceList.objects.filter(product=self.manufactured_product).order_by('-id').first().price
+        self.total_price = price * self.quantity
 
     def __str__(self):
         return str(self.manufactured_product)

@@ -48,8 +48,7 @@ class ManufacturedProductAddListModelSerializer(ModelSerializer):
         model = AddManufacturedProduct
         fields = [
             'product',
-            'quantity',
-            'price'
+            'quantity'
         ]
 
 
@@ -62,9 +61,6 @@ class ManufacturedProductAddDetailModelSerializer(ModelSerializer):
             'id',
             'product',
             'quantity',
-            'price',
-            'total_price',
-            'supplier',
             'warehouseman',
             'created_date'
         ]
@@ -76,5 +72,4 @@ class ManufacturedProductUpdateModelSerializer(ModelSerializer):
         fields = [
             'product',
             'quantity',
-            'price'
         ]

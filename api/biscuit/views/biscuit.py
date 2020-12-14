@@ -24,13 +24,7 @@ class BiscuitModelViewSet(viewsets.ModelViewSet):
         serializer = BiscuitModelSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        biscuit_id = serializer.data['id']
-        biscuit_data = {}
-        biscuit_data['biscuit'] = biscuit_id
-        warehouse_biscuit = WareHouseBiscuitCreateModelSerializer(data=biscuit_data)
-        warehouse_biscuit.is_valid(raise_exception=True)
-        warehouse_biscuit.save()
-        return Response(serializer.data)
+        return Response({'status': 200})
 
     def update(self, request, pk=None):
         biscuit = self.get_object(pk)

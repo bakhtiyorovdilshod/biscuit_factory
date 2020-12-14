@@ -1,9 +1,12 @@
 from django.contrib import admin
 
-from apps.product.models import Product, ManufacturedProduct
-from apps.product.models.add_product import AddProduct
+from apps.product.models import Product, ManufacturedProduct, ProductPriceList,ManufacturedProductPriceList
+from apps.product.models.add_product import AddProduct, AddProductLog,AddManufacturedProductLog
 
-# admin.site.register(Product)
+admin.site.register(AddProductLog)
 admin.site.register(ManufacturedProduct)
 admin.site.register(AddProduct)
+admin.site.register(ProductPriceList)
+admin.site.register(ManufacturedProductPriceList)
+admin.site.register(AddManufacturedProductLog)
 

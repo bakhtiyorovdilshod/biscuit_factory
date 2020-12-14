@@ -1,5 +1,8 @@
 from django.db import models
 
+from api.biscuit.utils.price import get_price
+from apps.biscuit.models import PriceList
+
 
 class WareHouseUnfitBiscuit(models.Model):
     statuses = (
@@ -23,9 +26,13 @@ class WareHouseUnfitBiscuit(models.Model):
         self.quantity -= value
 
     def set_total_price(self):
-        from apps.biscuit.models import Biscuit
-        price = Biscuit.objects.get(id=self.biscuit.id).price
-        self.total_price = price * self.quantity
+        price = get_price(self.biscuit).order_by('-id')
+        if price.exists():
+            price = price.first().price
+            self.total_price = price * self.quantity
+            return True
+        else:
+            return False
 
     def __str__(self):
-        return str(self.id)
+        return str(self.biscuit) + " " + str(self.status)

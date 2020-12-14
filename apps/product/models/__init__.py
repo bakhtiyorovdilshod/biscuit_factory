@@ -1,2 +1,2 @@
-from .product import Product, ManufacturedProduct
-from .add_product import AddProduct, AddManufacturedProduct
+from .product import Product, ManufacturedProduct,ProductPriceList,ManufacturedProductPriceList
+from .add_product import AddProduct, AddManufacturedProduct,AddProductLog,AddManufacturedProductLog

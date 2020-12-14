@@ -14,6 +14,18 @@ class ProductAddUpdateModelSerializer(ModelSerializer):
         return instance
 
 
+class ProductSubtractUpdateModelSerializer(ModelSerializer):
+    class Meta:
+        model = WareHouseProduct
+        fields = [
+            'quantity'
+        ]
+
+    def update(self, instance, validated_data):
+        instance.quantity = instance.quantity - validated_data.get('quantity', instance.quantity)
+        return instance
+
+
 class ProductFullUpdateModelSerializer(ModelSerializer):
     class Meta:
         model = WareHouseProduct

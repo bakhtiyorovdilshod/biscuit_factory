@@ -39,22 +39,9 @@ class ProductAddModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        quantity = data['quantity']
-        product_id = data['product']
-        price = data['price']
-        total_price = quantity * price
         serializer = ProductAddListModelSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        warehouse_product_data = {}
-        warehouse_product_data['quantity'] = quantity
-        product = self.get_warehouse_product(product_id)
-        warehouse_serializer = ProductAddUpdateModelSerializer(product, data=warehouse_product_data)
-        warehouse_serializer.is_valid(raise_exception=True)
-        warehouse_serializer.save()
-        product.total_price += total_price
-        product.set_average_price()
-        product.save()
         return Response(serializer.data)
 
     def retrieve(self, request, pk):
@@ -69,27 +56,7 @@ class ProductAddModelViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk):
         data = request.data
-        price = data['price']
-        quantity = data['quantity']
-        product = data['product']
         prev_product = self.get_object(pk)
-        warehouse_product = self.get_warehouse_product(prev_product.product)
-        warehouse_product.quantity-=prev_product.quantity
-        if warehouse_product.quantity == 0:
-            warehouse_product.total_price = 0
-            warehouse_product.average_price = 0
-        else:
-            prev_total_price = prev_product.price * prev_product.quantity
-            warehouse_product.total_price-=prev_total_price
-            warehouse_product.set_average_price()
-        warehouse_product.save()
-        next_product_id = self.get_product(product)
-        next_warehouse_product = self.get_warehouse_product(next_product_id)
-        next_warehouse_product.quantity+=quantity
-        new_total_price = price * quantity
-        next_warehouse_product.total_price+=new_total_price
-        next_warehouse_product.set_average_price()
-        next_warehouse_product.save()
         serializer = ProductUpdateModelSerializer(prev_product, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -124,22 +91,9 @@ class ManufacturedProductAddModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        quantity = data['quantity']
-        product_id = data['product']
-        price = data['price']
-        total_price = quantity * price
         serializer = ManufacturedProductAddListModelSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        warehouse_product_data = {}
-        warehouse_product_data['quantity'] = quantity
-        product = self.get_warehouse_product(product_id)
-        warehouse_serializer = ManufacturedProductAddUpdateModelSerializer(product, data=warehouse_product_data)
-        warehouse_serializer.is_valid(raise_exception=True)
-        warehouse_serializer.save()
-        product.total_price += total_price
-        product.set_average_price()
-        product.save()
         return Response(serializer.data)
 
     def retrieve(self, request, pk):
@@ -154,27 +108,7 @@ class ManufacturedProductAddModelViewSet(viewsets.ModelViewSet):
 
     def update(self, request, pk):
         data = request.data
-        price = data['price']
-        quantity = data['quantity']
-        product = data['product']
         prev_product = self.get_object(pk)
-        warehouse_product = self.get_warehouse_product(prev_product.product)
-        warehouse_product.quantity-=prev_product.quantity
-        if warehouse_product.quantity == 0:
-            warehouse_product.total_price = 0
-            warehouse_product.average_price = 0
-        else:
-            prev_total_price = prev_product.price * prev_product.quantity
-            warehouse_product.total_price-=prev_total_price
-            warehouse_product.set_average_price()
-        warehouse_product.save()
-        next_product_id = self.get_product(product)
-        next_warehouse_product = self.get_warehouse_product(next_product_id)
-        next_warehouse_product.quantity+=quantity
-        new_total_price = price * quantity
-        next_warehouse_product.total_price+=new_total_price
-        next_warehouse_product.set_average_price()
-        next_warehouse_product.save()
         serializer = ManufacturedProductUpdateModelSerializer(prev_product, data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

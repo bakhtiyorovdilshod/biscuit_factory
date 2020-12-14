@@ -28,3 +28,4 @@ class UnfitBiscuitDetailSerializer(serializers.ModelSerializer):
             'total_price',
             'date'
         ]
+

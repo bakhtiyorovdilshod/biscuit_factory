@@ -23,23 +23,11 @@ class ProductModelViewSet(viewsets.ModelViewSet):
         except Product.DoesNotExist:
             raise Http404
 
-    def get_supplier(self, pk):
-        try:
-            return Supplier.objects.get(pk=pk)
-        except Supplier.DoesNotExist:
-            raise Http404
-
     def create(self, request, *args, **kargs):
         data = request.data
         serializer = ProductModelSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        product_id = serializer.data['id']
-        product_data = {}
-        product_data['product'] = product_id
-        warehouse_product = WareHouseProductCreateModelSerializer(data=product_data)
-        warehouse_product.is_valid(raise_exception=True)
-        warehouse_product.save()
         return Response(serializer.data)
 
     def update(self, request, pk=None):
@@ -76,12 +64,6 @@ class ManufacturedProductModelViewSet(viewsets.ModelViewSet):
         serializer = ManufacturedProductModelSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        product_id = serializer.data['id']
-        product_data = {}
-        product_data['manufactured_product'] = product_id
-        warehouse_product = WareHouseManufacturedProductCreateModelSerializer(data=product_data)
-        warehouse_product.is_valid(raise_exception=True)
-        warehouse_product.save()
         return Response(serializer.data)
 
     def update(self, request, pk=None):

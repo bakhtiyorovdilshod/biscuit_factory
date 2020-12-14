@@ -22,24 +22,9 @@ class UnFitBiscuitModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         data = request.data
-        biscuit_id = data['biscuit']
-        status = data['status']
-        biscuit = Biscuit.objects.get(id=biscuit_id)
         serializer = UnfitBiscuitCreateSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
-        obj = UnfitBiscuit.objects.get(id=serializer.save().id)
-        obj.set_total_price()
-        obj.save()
-        instance, _ = WareHouseUnfitBiscuit.objects.get_or_create(biscuit=biscuit, status=status)
-        instance.quantity = instance.quantity + data['quantity']
-        instance.save()
-        instance.set_total_price()
-        instance.save()
-        # ware_house_biscuit = WareHouseBiscuit.objects.get(biscuit=biscuit)
-        # ware_house_biscuit.quantity = ware_house_biscuit.quantity - data['quantity']
-        # ware_house_biscuit.set_total_price()
-        # ware_house_biscuit.save()
         return Response(data=serializer.data)
 
     def retrieve(self, request, pk):
@@ -52,3 +37,9 @@ class UnFitBiscuitModelViewSet(viewsets.ModelViewSet):
         serializer = UnfitBiscuitDetailSerializer(products, many=True)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        product = self.get_object(pk)
+        serializer = UnfitBiscuitCreateSerializer(product, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(data=serializer.data)

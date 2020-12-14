@@ -1,6 +1,6 @@
 from django.db import models
 
-from apps.biscuit.models.biscuit import Biscuit
+from apps.biscuit.models.biscuit import Biscuit, PriceList
 
 
 class WareHouseBiscuit(models.Model):
@@ -15,6 +15,18 @@ class WareHouseBiscuit(models.Model):
 
     def set_average_price(self):
         self.average_price = float(self.total_price/self.quantity)
+
+    def set_total_price(self):
+        price = PriceList.objects.filter(biscuit=self.biscuit).order_by('-id').first().price
+        if price is None:
+            price = Biscuit.objects.get(id=self.biscuit.id).price
+        self.total_price = price * self.quantity
+
+    def add_quantity(self, value):
+        self.quantity += value
+
+    def subtract_quantity(self, value):
+        self.quantity -= value
 
     def __str__(self):
         return str(self.biscuit)

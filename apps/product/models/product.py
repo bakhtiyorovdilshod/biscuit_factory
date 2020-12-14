@@ -25,3 +25,27 @@ class ManufacturedProduct(models.Model):
         return self.name
 
 
+class ProductPriceList(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(default=0, blank=True, null=True)
+    currency = models.CharField(default='so\'m', max_length=200, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.product)
+
+
+class ManufacturedProductPriceList(models.Model):
+    product = models.ForeignKey(ManufacturedProduct, on_delete=models.CASCADE)
+    price = models.PositiveIntegerField(default=0, blank=True, null=True)
+    currency = models.CharField(default='so\'m', max_length=200, blank=True, null=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.product)
+
+
+
+

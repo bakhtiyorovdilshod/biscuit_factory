@@ -35,7 +35,7 @@ class ProductPriceList(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.price
+        return str(self.price)
 
 
 class ManufacturedProductPriceList(models.Model):

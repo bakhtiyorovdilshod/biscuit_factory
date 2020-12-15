@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 
 from apps.biscuit.models import Biscuit
@@ -16,9 +18,9 @@ class BuyingBiscuit(models.Model):
         ('delivered', 'delivered')
     )
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     currency = models.CharField(default='so\'m', max_length=200)
-    total_price = models.PositiveIntegerField(default=0)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     comment = models.TextField(max_length=300, blank=True, null=True)
     payment_type = models.CharField(max_length=200, default='cash', choices=payment_types)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -38,9 +40,9 @@ class BuyingBiscuitLog(models.Model):
     )
     sale_id = models.PositiveIntegerField(default=0)
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     currency = models.CharField(default='so\'m', max_length=200)
-    total_price = models.PositiveIntegerField(default=0)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     comment = models.TextField(max_length=300, blank=True, null=True)
     payment_type = models.CharField(max_length=200, default='cash', choices=payment_types)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
@@ -49,3 +51,17 @@ class BuyingBiscuitLog(models.Model):
 
     def __str__(self):
         return str(self.biscuit)
+
+
+class SaleBiscuitPrice(models.Model):
+    biscuit = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    sale_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    default_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    modified_date = models.DateTimeField(auto_now=True, blank=True, null=True)
+
+    def __str__(self):
+        return str(self.biscuit)
+
+
+

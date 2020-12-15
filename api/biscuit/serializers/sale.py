@@ -2,7 +2,7 @@ from rest_framework import serializers
 
 from api.biscuit.serializers.biscuit import BiscuitModelSerializer
 from api.client.serializers.client import ClientModelSerializer
-from apps.biscuit.models.sale import BuyingBiscuit
+from apps.biscuit.models.sale import BuyingBiscuit, SaleBiscuitPrice
 
 
 class SaleBiscuitModelSerializer(serializers.ModelSerializer):
@@ -30,3 +30,19 @@ class SaleBiscuitDetailModelSerializer(serializers.ModelSerializer):
             'created_date',
             'modified_date'
         ]
+
+
+class SaleBiscuitPriceModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SaleBiscuitPrice
+        fields = [
+            'biscuit',
+            'sale_price',
+            'default_price'
+        ]
+
+
+class SaleBiscuitPriceDetailModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SaleBiscuitPrice
+        fields = "__all__"

@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 
 from api.biscuit.utils.price import get_price
@@ -11,9 +13,9 @@ class WareHouseUnfitBiscuit(models.Model):
     )
     from apps.biscuit.models import Biscuit
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
-    quantity = models.IntegerField(default=0, blank=True, null=True)
+    quantity = models.DecimalField(max_digits=10, decimal_places=4, default=decimal.Decimal(0))
     unit_of_measurement = models.CharField(max_length=200, default='kg', blank=True, null=True)
-    total_price = models.IntegerField(default=0)
+    total_price = models.DecimalField(max_digits=10, decimal_places=4, default=decimal.Decimal(0))
     status = models.CharField(max_length=100, choices=statuses, blank=True, null=True)
     currency = models.CharField(max_length=10, default='So\'m')
     created = models.DateTimeField(auto_now_add=True)

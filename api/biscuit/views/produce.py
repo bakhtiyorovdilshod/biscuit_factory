@@ -25,8 +25,6 @@ class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        price = PriceList.objects.filter(biscuit=data['biscuit']).order_by('-id').first().price
-        data['total_price'] = data['quantity'] * price
         serializer = ProduceBiscuitCreateSerializer(data=data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -35,8 +33,6 @@ class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
     def update(self, request, pk=None):
         data = request.data
         obj = self.get_object(pk)
-        price = PriceList.objects.filter(biscuit=data['biscuit']).order_by('-id').first().price
-        data['total_price'] = data['quantity'] * price
         serializer = ProduceBiscuitCreateSerializer(obj, data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()

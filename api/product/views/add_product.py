@@ -36,7 +36,6 @@ class ProductAddModelViewSet(viewsets.ModelViewSet):
         except Product.DoesNotExist:
             raise Http404
 
-
     def create(self, request, *args, **kwargs):
         data = request.data
         serializer = ProductAddListModelSerializer(data=data)

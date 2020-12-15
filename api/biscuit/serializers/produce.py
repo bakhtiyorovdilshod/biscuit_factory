@@ -11,7 +11,6 @@ class ProduceBiscuitCreateSerializer(serializers.ModelSerializer):
             'biscuit',
             'quantity',
             'staff',
-            'total_price'
         ]
 
 
@@ -26,7 +25,6 @@ class ProduceBiscuitSerializer(serializers.ModelSerializer):
             'biscuit',
             'quantity',
             'staff',
-            'total_price',
             'currency',
             'status',
             'created_date',

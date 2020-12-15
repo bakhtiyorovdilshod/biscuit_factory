@@ -54,9 +54,7 @@ def sub_product(instance):
 
 
 def create_produce_log(instance):
-    price = PriceList.objects.filter(biscuit=instance.biscuit).order_by('-id').first().price
-    total_price = instance.quantity * price
-    ProduceBiscuitLog.objects.create(produce_biscuit_id=instance.id, biscuit=instance.biscuit, quantity=instance.quantity, total_price=total_price, status=instance.status)
+    ProduceBiscuitLog.objects.create(produce_biscuit_id=instance.id, biscuit=instance.biscuit, quantity=instance.quantity, status=instance.status)
 
 
 

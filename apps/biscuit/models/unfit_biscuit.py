@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 
 from api.biscuit.utils.price import get_price
@@ -10,10 +12,10 @@ class UnfitBiscuit(models.Model):
         ('unrecyclable', 'unrecyclable')
     )
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(blank=True, null=True)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     description = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=100, choices=statuses)
-    total_price = models.PositiveIntegerField(blank=True, null=True)
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -37,7 +39,7 @@ class AddUnFitBiscuitLog(models.Model):
     )
     unfit_biscuit_id = models.PositiveIntegerField(default=0)
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     status = models.CharField(max_length=100, choices=statuses)
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)

@@ -1,3 +1,5 @@
+import decimal
+
 from django.db import models
 from .product import Product, ManufacturedProduct
 from apps.supplier.models.supplier import Supplier
@@ -12,10 +14,10 @@ class AddProduct(models.Model):
     )
 
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
-    currency = models.CharField(max_length=10, choices=type_currency)
-    price = models.PositiveIntegerField(default=0)
-    total_price = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    currency = models.CharField(max_length=20, choices=type_currency)
+    price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     supplier = models.ForeignKey(Supplier, on_delete=models.CASCADE, blank=True, null=True)
     warehouseman = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -29,8 +31,13 @@ class AddProduct(models.Model):
 
 
 class AddManufacturedProduct(models.Model):
+    type_of_calculate = (
+        ('un_calculate', 'un_calculate'),
+        ('calculated', 'calculated')
+    )
     product = models.ForeignKey(ManufacturedProduct, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    for_price = models.CharField(max_length=50, choices=type_of_calculate, default='un_calculate')
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -41,9 +48,9 @@ class AddManufacturedProduct(models.Model):
 class AddProductLog(models.Model):
     add_product_id = models.PositiveIntegerField(default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
-    price = models.PositiveIntegerField(default=0)
-    total_price = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 
@@ -54,7 +61,7 @@ class AddProductLog(models.Model):
 class AddManufacturedProductLog(models.Model):
     manufactured_product_id = models.PositiveIntegerField(default=0)
     product = models.ForeignKey(ManufacturedProduct, on_delete=models.CASCADE)
-    quantity = models.PositiveIntegerField(default=0)
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     created_date = models.DateTimeField(auto_now_add=True)
     modified_date = models.DateTimeField(auto_now=True)
 

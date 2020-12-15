@@ -5,24 +5,27 @@ from apps.product.models import AddProduct, ManufacturedProduct, ManufacturedPro
 from apps.product.models.add_product import AddProductLog, AddManufacturedProductLog
 from apps.recipe.models import ManufacturedProductRecipe
 from apps.warehouse.models import WareHouseProduct, WareHouseManufacturedProduct
+from decimal import Decimal
 
 
 def add_product(instance):
     warehouse_product_data = {}
     total_price = instance.quantity * instance.price
-    warehouse_product_data['quantity'] = instance.quantity
+    warehouse_product_data['quantity'] = Decimal(instance.quantity)
     product = WareHouseProduct.objects.get(product=instance.product)
     warehouse_serializer = ProductAddUpdateModelSerializer(product, data=warehouse_product_data)
     warehouse_serializer.is_valid(raise_exception=True)
     warehouse_serializer.save()
-    product.total_price += total_price
+    product.total_price += Decimal(total_price)
     product.set_average_price()
     product.save()
+    ProductPriceList.objects.create(product=instance.product, price=Decimal(instance.price))
 
 
 def add_product_log(instance):
     total_price = instance.quantity * instance.price
-    AddProductLog.objects.create(add_product_id=instance.id, product=instance.product, quantity=instance.quantity,total_price=total_price)
+    total_price = Decimal(total_price)
+    AddProductLog.objects.create(add_product_id=instance.id, product=instance.product, quantity=Decimal(instance.quantity),total_price=total_price)
 
 
 def sub_product(instance):
@@ -34,7 +37,7 @@ def sub_product(instance):
     warehouse_serializer = ProductSubtractUpdateModelSerializer(product, data=warehouse_product_data)
     warehouse_serializer.is_valid(raise_exception=True)
     warehouse_serializer.save()
-    product.total_price -= total_price
+    product.total_price -= Decimal(total_price)
     product.set_average_price()
     product.save()
 
@@ -48,12 +51,12 @@ def add_manufactured_product(instance):
         value = i.value
         warehouse = WareHouseProduct.objects.get(product=product)
         price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
-        quantity_value = instance.quantity * value
-        warehouse.quantity -= quantity_value
-        new_total_price = price * quantity_value
-        warehouse.total_price -= new_total_price
+        quantity_value = Decimal(instance.quantity) * Decimal(value)
+        warehouse.quantity -= Decimal(quantity_value)
+        new_total_price = Decimal(price) * quantity_value
+        warehouse.total_price -= Decimal(new_total_price)
         warehouse.save()
-    ware_product.add_quantity(instance.quantity)
+    ware_product.add_quantity(Decimal(instance.quantity))
     ware_product.set_total_price()
     ware_product.set_average_price()
     ware_product.save()

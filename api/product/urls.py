@@ -2,6 +2,7 @@ from django.urls import path, include
 
 from api.product.views.add_product import ProductAddModelViewSet, ManufacturedProductAddModelViewSet
 from api.product.views.filter_product import ProductHistoryAPIView
+from api.product.views.price import CalculateProductPrice
 from api.product.views.product import *
 from rest_framework.routers import SimpleRouter
 
@@ -20,7 +21,8 @@ urlpatterns = [
     path('add/', include(router_one.urls)),
     path('manufacture/', include(router_three.urls)),
     path('manufacture/', include(router_four.urls)),
-    path('filter', ProductHistoryAPIView.as_view(), name='filter product')
+    path('filter', ProductHistoryAPIView.as_view(), name='filter product'),
+    path('take/price/', CalculateProductPrice.as_view(),name='take price')
 
 
 ]

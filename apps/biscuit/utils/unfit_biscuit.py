@@ -1,17 +1,25 @@
 from apps.biscuit.models import Biscuit, AddUnFitBiscuitLog
+from apps.biscuit.utils.biscuit import get_biscuit_recipe, get_warehouse_product, get_product_price
 from apps.product.models import ProductPriceList
 from apps.recipe.models import BiscuitRecipe
 from apps.warehouse.models import WareHouseUnfitBiscuit, WareHouseProduct
+from rest_framework import serializers
 
+
+def get_or_create_unfit_biscuit(biscuit, status):
+    try:
+        return WareHouseUnfitBiscuit.objects.get_or_create(biscuit=biscuit, status=status)
+    except WareHouseProduct.DoesNotExist:
+        raise serializers.ValidationError('warehouse product not found')
 
 def add_quantity_unfit_biscuit(instance):
-    unfit_biscuit, _ = WareHouseUnfitBiscuit.objects.get_or_create(biscuit=instance.biscuit, status=instance.status)
-    recipe = BiscuitRecipe.objects.filter(biscuit=instance.biscuit)
+    unfit_biscuit, _ = get_or_create_unfit_biscuit(instance.biscuit, instance.status)
+    recipe = get_biscuit_recipe(instance.biscuit)
     for i in recipe:
         product = i.product
         value = i.value
-        warehouse = WareHouseProduct.objects.get(product=product)
-        price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
+        warehouse = get_warehouse_product(product)
+        price = get_product_price(product)
         quantity_value = instance.quantity * value
         warehouse.quantity -= quantity_value
         new_total_price = price * quantity_value
@@ -28,16 +36,16 @@ def create_unfit_biscuit_log(instance):
 
 def subtract_quantity_unfit_biscuit(instance):
     obj = AddUnFitBiscuitLog.objects.get(unfit_biscuit_id=instance.id)
-    unfit_biscuit, _ = WareHouseUnfitBiscuit.objects.get_or_create(biscuit=instance.biscuit, status=instance.status)
+    unfit_biscuit, _ = get_or_create_unfit_biscuit(instance.biscuit, instance.status)
     unfit_biscuit.subtract_quantity(obj.quantity)
     unfit_biscuit.set_total_price()
     unfit_biscuit.save()
-    recipe = BiscuitRecipe.objects.filter(biscuit=instance.biscuit)
+    recipe = get_biscuit_recipe(instance.biscuit)
     for i in recipe:
         product = i.product
         value = i.value
-        warehouse = WareHouseProduct.objects.get(product=product)
-        price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
+        warehouse = get_warehouse_product(product)
+        price = get_product_price(product)
         quantity_value = obj.quantity * value
         warehouse.quantity += quantity_value
         new_total_price = price * quantity_value

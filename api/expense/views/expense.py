@@ -4,6 +4,7 @@ from rest_framework.response import Response
 from django.http import Http404
 from api.expense.serializers.expense import ExpenseModelSerializer, QuantityExpenseModelSerializer, QuantityExpenseDetailModelSerializer
 from apps.expense.models.expense import Expense, QuantityExpense
+from rest_framework.serializers import ValidationError
 
 
 class ExpenseModelViewSet(viewsets.ModelViewSet):
@@ -21,7 +22,7 @@ class QuantityExpenseModelViewSet(viewsets.ModelViewSet):
         try:
             return QuantityExpense.objects.get(pk=pk)
         except QuantityExpense.DoesNotExist:
-            raise Http404
+            raise ValidationError('not found')
 
     def list(self, request):
         serializer = QuantityExpenseDetailModelSerializer(self.queryset, many=True)

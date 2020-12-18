@@ -1,9 +1,7 @@
 import decimal
 
 from django.db import models
-
-from api.biscuit.utils.price import get_price
-from apps.biscuit.models import PriceList
+from apps.biscuit.utils.biscuit import get_biscuit_price
 
 
 class WareHouseUnfitBiscuit(models.Model):
@@ -28,13 +26,8 @@ class WareHouseUnfitBiscuit(models.Model):
         self.quantity -= value
 
     def set_total_price(self):
-        price = get_price(self.biscuit).order_by('-id')
-        if price.exists():
-            price = price.first().price
-            self.total_price = price * self.quantity
-            return True
-        else:
-            return False
+        price = get_biscuit_price(self.biscuit)
+        self.total_price = price * self.quantity
 
     def __str__(self):
         return str(self.biscuit) + " " + str(self.status)

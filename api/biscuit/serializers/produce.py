@@ -3,6 +3,9 @@ from api.user.serializers.user import AccountSerializer
 from apps.biscuit.models import ProduceBiscuit
 from rest_framework import serializers
 
+from apps.biscuit.utils.biscuit import get_biscuit_recipe, check_warehouse_product_quantity
+from rest_framework.serializers import ValidationError
+
 
 class ProduceBiscuitCreateSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,6 +15,38 @@ class ProduceBiscuitCreateSerializer(serializers.ModelSerializer):
             'quantity',
             'staff',
         ]
+
+    def create(self, validated_data):
+        biscuit = validated_data.get('biscuit')
+        quantity = validated_data.get('quantity')
+        staff = validated_data.get('staff')
+        recipes = get_biscuit_recipe(biscuit)
+        if len(recipes)!=0:
+            if check_warehouse_product_quantity(recipes, quantity) == len(recipes):
+                instance = ProduceBiscuit.objects.create(biscuit=biscuit, quantity=quantity, staff=staff)
+                return instance
+            else:
+                raise ValidationError('not enougt products in warehouse')
+        else:
+            raise ValidationError('This biscuit does not have recipe')
+
+    def update(self, instance, validated_data):
+        biscuit = validated_data.get('biscuit')
+        quantity = validated_data.get('quantity')
+        recipes = get_biscuit_recipe(biscuit)
+        if len(recipes) != 0:
+            if check_warehouse_product_quantity(recipes, quantity) == len(recipes):
+                instance.biscuit = validated_data.get('biscuit', instance.biscuit)
+                instance.quantity = validated_data.get('quantity', instance.quantity)
+                instance.staff = validated_data.get('staff', instance.staff)
+                instance.save()
+                return instance
+            else:
+                raise ValidationError('not enougt products in warehouse')
+        else:
+            raise ValidationError('This biscuit does not have recipe')
+
+
 
 
 class ProduceBiscuitSerializer(serializers.ModelSerializer):

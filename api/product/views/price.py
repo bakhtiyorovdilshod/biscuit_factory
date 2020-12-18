@@ -16,7 +16,8 @@ class CalculateProductPrice(APIView):
             for i in product_data:
                 price = 0
                 product = i['product']
-                product = ManufacturedProduct.objects.get(id=product)
+                from apps.product.utils.product import get_manufactured_product
+                product = get_manufactured_product(product)
                 total_price = i['total_price']
                 quantity = i['quantity']
                 total_price = Decimal(total_price)

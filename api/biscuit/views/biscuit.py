@@ -6,6 +6,7 @@ from api.biscuit.serializers.biscuit import BiscuitModelSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import Http404
+from rest_framework.serializers import ValidationError
 
 
 class BiscuitModelViewSet(viewsets.ModelViewSet):
@@ -17,7 +18,7 @@ class BiscuitModelViewSet(viewsets.ModelViewSet):
         try:
             return Biscuit.objects.get(pk=pk)
         except Biscuit.DoesNotExist:
-            raise Http404
+            raise ValidationError('biscuit not found')
 
     def create(self, request, *args, **kargs):
         data = request.data

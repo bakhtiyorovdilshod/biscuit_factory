@@ -8,6 +8,7 @@ from rest_framework.response import Response
 from rest_framework.generics import CreateAPIView, ListAPIView
 from rest_framework.views import APIView
 from django.http import Http404
+from rest_framework.serializers import ValidationError
 
 
 class UnFitBiscuitModelViewSet(viewsets.ModelViewSet):
@@ -18,7 +19,7 @@ class UnFitBiscuitModelViewSet(viewsets.ModelViewSet):
         try:
             return UnfitBiscuit.objects.get(pk=pk)
         except UnfitBiscuit.DoesNotExist:
-            raise Http404
+            raise ValidationError('not found')
 
     def create(self, request):
         data = request.data

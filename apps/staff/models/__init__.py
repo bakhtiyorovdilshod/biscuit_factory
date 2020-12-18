@@ -1,0 +1,1 @@
+from .salary import SalaryPercentage, StaffSalary

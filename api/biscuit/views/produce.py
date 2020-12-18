@@ -11,6 +11,7 @@ from apps.product.models import Product
 from apps.recipe.models import BiscuitRecipe
 from apps.warehouse.models import WareHouseBiscuit, WareHouseProduct
 from rest_framework.response import Response
+from rest_framework.serializers import ValidationError
 
 
 class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
@@ -21,7 +22,7 @@ class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
         try:
             return ProduceBiscuit.objects.get(pk=pk)
         except ProduceBiscuit.DoesNotExist:
-            raise Http404
+            raise ValidationError('not found')
 
     def create(self, request, *args, **kwargs):
         data = request.data

@@ -1,9 +1,8 @@
 import decimal
 
 from django.db import models
-
-from api.biscuit.utils.price import get_price
 from apps.biscuit.models import Biscuit, PriceList
+
 
 
 class UnfitBiscuit(models.Model):
@@ -20,13 +19,9 @@ class UnfitBiscuit(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def set_total_price(self):
-        price = get_price(self.biscuit).order_by('-id')
-        if price.exists():
-            price = price.first().price
-            self.total_price = self.quantity * price
-            return True
-        else:
-            return False
+        from apps.biscuit.utils.biscuit import get_biscuit_price
+        price = get_biscuit_price(self.biscuit)
+        self.total_price = self.quantity * price
 
     def __str__(self):
         return str(self.id)

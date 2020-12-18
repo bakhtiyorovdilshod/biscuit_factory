@@ -11,6 +11,7 @@ from api.warehouse.serializers.add_product import ProductAddUpdateModelSerialize
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from django.http import Http404
+from rest_framework.serializers import ValidationError
 
 
 class ProductAddModelViewSet(viewsets.ModelViewSet):
@@ -22,19 +23,19 @@ class ProductAddModelViewSet(viewsets.ModelViewSet):
         try:
             return AddProduct.objects.get(pk=pk)
         except AddProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('object not found')
 
     def get_warehouse_product(self, pk):
         try:
             return WareHouseProduct.objects.get(product=pk)
         except WareHouseProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('object not found')
 
     def get_product(self, pk):
         try:
             return Product.objects.get(id=pk)
         except Product.DoesNotExist:
-            raise Http404
+            raise ValidationError('product not found')
 
     def create(self, request, *args, **kwargs):
         data = request.data
@@ -73,19 +74,19 @@ class ManufacturedProductAddModelViewSet(viewsets.ModelViewSet):
         try:
             return AddManufacturedProduct.objects.get(pk=pk)
         except AddManufacturedProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('object not found')
 
     def get_warehouse_product(self, pk):
         try:
             return WareHouseManufacturedProduct.objects.get(manufactured_product=pk)
         except WareHouseManufacturedProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('object not found')
 
     def get_product(self, pk):
         try:
             return ManufacturedProduct.objects.get(id=pk)
         except ManufacturedProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('product not found')
 
 
     def create(self, request, *args, **kwargs):

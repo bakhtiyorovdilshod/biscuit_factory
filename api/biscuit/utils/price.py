@@ -1,20 +1,22 @@
 from django.http import Http404
 
-from apps.biscuit.models import PriceList, ProduceBiscuit
+from apps.biscuit.models import PriceList, ProduceBiscuit, SaleBiscuitPrice
+from apps.biscuit.utils.biscuit import get_product_price, get_biscuit_recipe
 from apps.expense.models import QuantityExpense
 from apps.product.models import ProductPriceList
 from apps.recipe.models import BiscuitRecipe
+from rest_framework.serializers import ValidationError
 
 
-def get_price(biscuit):
+def get_biscuit_sale_price(biscuit):
     try:
-        return PriceList.objects.filter(biscuit=biscuit)
-    except PriceList.DoesNotExist:
-        return ({'error': 404})
+        return SaleBiscuitPrice.objects.filter(biscuit=biscuit).order_by('-id').first().sale_price
+    except AttributeError:
+        raise ValidationError('biscuit sale price is not found!')
 
 
 def calculate_biscuit_price():
-    data = {'data':[
+    data = {'data': [
 
     ]}
     produced_biscuits = ProduceBiscuit.objects.filter(for_price='un_calculate')
@@ -22,11 +24,11 @@ def calculate_biscuit_price():
         total_price = 0
         biscuit = produced_biscuit.biscuit
         quantity = produced_biscuit.quantity
-        recipes = BiscuitRecipe.objects.filter(biscuit=biscuit)
+        recipes = get_biscuit_recipe(biscuit)
         for recipe in recipes:
             product = recipe.product
             value = recipe.value
-            product_price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
+            product_price = get_product_price(product)
             total_price = total_price + product_price * value * quantity
         data['data'].append({
             'biscuit': biscuit.id,

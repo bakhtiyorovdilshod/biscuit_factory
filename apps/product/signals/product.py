@@ -43,8 +43,8 @@ def product_add_quantity(sender, instance, created, **kwargs):
 @receiver(post_save, sender=AddManufacturedProduct)
 def manufactured_product_add_quantity(sender, instance, created, **kwargs):
     if created:
-        add_manufactured_product(instance)
-        add_manufactured_product_log(instance)
+        if add_manufactured_product(instance):
+            add_manufactured_product_log(instance)
     if not created:
         subtract_manufactured_product(instance)
 

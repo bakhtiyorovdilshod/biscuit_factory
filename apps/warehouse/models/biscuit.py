@@ -2,7 +2,8 @@ import decimal
 
 from django.db import models
 
-from apps.biscuit.models.biscuit import Biscuit, PriceList
+from apps.biscuit.models.biscuit import Biscuit
+from apps.biscuit.utils.biscuit import get_biscuit_price
 
 
 class WareHouseBiscuit(models.Model):
@@ -16,12 +17,10 @@ class WareHouseBiscuit(models.Model):
     modified_date = models.DateTimeField(auto_now=True)
 
     def set_average_price(self):
-        self.average_price = self.total_price/self.quantity
+        self.average_price = decimal.Decimal(self.total_price/self.quantity)
 
     def set_total_price(self):
-        price = PriceList.objects.filter(biscuit=self.biscuit).order_by('-id').first().price
-        if price is None:
-            price = Biscuit.objects.get(id=self.biscuit.id).price
+        price = get_biscuit_price(self.biscuit)
         self.total_price = price * self.quantity
 
     def add_quantity(self, value):

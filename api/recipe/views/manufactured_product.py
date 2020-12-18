@@ -1,3 +1,4 @@
+from apps.product.utils.product import get_manufactured_product, get_product_recipe
 from apps.recipe.models.manufactured_product import ManufacturedProductRecipe
 from api.recipe.serializers.manufactured_product import ManufacturedProductRecipeSerializer, ManufacturedProductRecipeDetailSerializer
 from apps.product.models.product import ManufacturedProduct
@@ -25,7 +26,7 @@ class ManufacturedProductRetseptDetailAPIView(APIView):
     def put(self, request, *args, **kwargs):
         data = request.data
         product_id = self.request.GET.get('product_id', None)
-        get_product = ManufacturedProduct.objects.get(id=product_id)
+        get_product = get_manufactured_product(product_id)
         ManufacturedProductRecipe.objects.filter(manufactured_product=get_product).delete()
         for i in data:
             serializer = ManufacturedProductRecipeSerializer(data=i)
@@ -35,7 +36,7 @@ class ManufacturedProductRetseptDetailAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         product_id = self.request.GET.get('product_id', None)
-        get_product = ManufacturedProduct.objects.get(id=product_id)
-        recipes = ManufacturedProductRecipe.objects.filter(manufactured_product=get_product)
+        get_product = get_manufactured_product(id=product_id)
+        recipes = get_product_recipe(get_product)
         serializer = ManufacturedProductRecipeDetailSerializer(recipes, many=True)
         return Response(serializer.data)

@@ -26,6 +26,7 @@ class ProductDetailSerializer(ModelSerializer):
     class Meta:
         model = Product
         fields = [
+            'id',
             'name',
             'unit_of_measurement',
             'supplier',

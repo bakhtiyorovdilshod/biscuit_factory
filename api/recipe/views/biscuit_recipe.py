@@ -3,6 +3,7 @@ from api.recipe.serializers.biscuit_recipe import BiscuitRecipeSerializer, Biscu
 from apps.biscuit.models.biscuit import Biscuit
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from apps.biscuit.utils.biscuit import get_biscuit, get_biscuit_recipe
 
 
 class RetseptListAPIView(APIView):
@@ -25,7 +26,7 @@ class RetseptDetailAPIView(APIView):
     def put(self, request, *args, **kwargs):
         data = request.data
         biscuit_id = self.request.GET.get('biscuit_id', None)
-        get_biscuit = Biscuit.objects.get(id=biscuit_id)
+        get_biscuit = get_biscuit(biscuit_id)
         BiscuitRecipe.objects.filter(biscuit=get_biscuit).delete()
         for i in data:
             serializer = BiscuitRecipeSerializer(data=i)
@@ -35,8 +36,8 @@ class RetseptDetailAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         biscuit_id = self.request.GET.get('biscuit_id', None)
-        get_biscuit = Biscuit.objects.get(id=biscuit_id)
-        recipes = BiscuitRecipe.objects.filter(biscuit=get_biscuit)
+        get_biscuit = get_biscuit(biscuit_id)
+        recipes = get_biscuit_recipe(get_biscuit)
         serializer = BiscuitRecipeDetailSerializer(recipes, many=True)
         return Response(serializer.data)
 

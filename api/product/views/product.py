@@ -10,6 +10,7 @@ from django.http import Http404
 
 from apps.supplier.models import Supplier
 from apps.warehouse.models import WareHouseProduct
+from rest_framework.serializers import ValidationError
 
 
 class ProductModelViewSet(viewsets.ModelViewSet):
@@ -21,7 +22,7 @@ class ProductModelViewSet(viewsets.ModelViewSet):
         try:
             return Product.objects.get(pk=pk)
         except Product.DoesNotExist:
-            raise Http404
+            raise ValidationError('not found product')
 
     def create(self, request, *args, **kargs):
         data = request.data
@@ -57,7 +58,7 @@ class ManufacturedProductModelViewSet(viewsets.ModelViewSet):
         try:
             return ManufacturedProduct.objects.get(pk=pk)
         except ManufacturedProduct.DoesNotExist:
-            raise Http404
+            raise ValidationError('not found product')
 
     def create(self, request, *args, **kargs):
         data = request.data

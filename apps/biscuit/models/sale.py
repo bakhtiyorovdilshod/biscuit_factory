@@ -54,7 +54,7 @@ class BuyingBiscuitLog(models.Model):
 
 
 class SaleBiscuitPrice(models.Model):
-    biscuit = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
     sale_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     default_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     created_date = models.DateTimeField(auto_now_add=True, blank=True, null=True)

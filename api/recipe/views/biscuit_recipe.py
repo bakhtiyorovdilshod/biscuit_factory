@@ -24,6 +24,7 @@ class RetseptListAPIView(APIView):
 
 class RetseptDetailAPIView(APIView):
     def put(self, request, *args, **kwargs):
+        from apps.biscuit.utils.biscuit import get_biscuit
         data = request.data
         biscuit_id = self.request.GET.get('biscuit_id', None)
         get_biscuit = get_biscuit(biscuit_id)
@@ -35,6 +36,7 @@ class RetseptDetailAPIView(APIView):
         return Response({'code': 200})
 
     def get(self, request, *args, **kwargs):
+        from apps.biscuit.utils.biscuit import get_biscuit
         biscuit_id = self.request.GET.get('biscuit_id', None)
         get_biscuit = get_biscuit(biscuit_id)
         recipes = get_biscuit_recipe(get_biscuit)

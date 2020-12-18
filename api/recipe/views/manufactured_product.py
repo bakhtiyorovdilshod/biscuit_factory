@@ -36,7 +36,7 @@ class ManufacturedProductRetseptDetailAPIView(APIView):
 
     def get(self, request, *args, **kwargs):
         product_id = self.request.GET.get('product_id', None)
-        get_product = get_manufactured_product(id=product_id)
+        get_product = get_manufactured_product(product_id)
         recipes = get_product_recipe(get_product)
         serializer = ManufacturedProductRecipeDetailSerializer(recipes, many=True)
         return Response(serializer.data)

@@ -17,6 +17,7 @@ from rest_framework.serializers import ValidationError
 class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
     queryset = ProduceBiscuit.objects.all()
     serializer_class = ProduceBiscuitSerializer
+    permission_classes = (IsAuthenticated,)
 
     def get_object(self, pk):
         try:

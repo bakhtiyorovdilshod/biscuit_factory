@@ -4,9 +4,12 @@ from apps.biscuit.models.biscuit import Biscuit
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from apps.biscuit.utils.biscuit import get_biscuit, get_biscuit_recipe
+from rest_framework.permissions import IsAuthenticated
 
 
 class RetseptListAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         data = request.data
         for i in data:
@@ -23,6 +26,8 @@ class RetseptListAPIView(APIView):
 
 
 class RetseptDetailAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, *args, **kwargs):
         from apps.biscuit.utils.biscuit import get_biscuit
         data = request.data

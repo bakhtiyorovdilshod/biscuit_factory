@@ -4,9 +4,12 @@ from api.recipe.serializers.manufactured_product import ManufacturedProductRecip
 from apps.product.models.product import ManufacturedProduct
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
 
 
 class ManufacturedProductRetseptListAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def post(self, request):
         data = request.data
         for i in data:
@@ -23,6 +26,8 @@ class ManufacturedProductRetseptListAPIView(APIView):
 
 
 class ManufacturedProductRetseptDetailAPIView(APIView):
+    permission_classes = (IsAuthenticated,)
+
     def put(self, request, *args, **kwargs):
         data = request.data
         product_id = self.request.GET.get('product_id', None)

@@ -23,6 +23,7 @@ class QuantityExpenseDetailModelSerializer(ModelSerializer):
     class Meta:
         model = QuantityExpense
         fields = [
+            'id',
             'expense',
             'cost',
             'currency',

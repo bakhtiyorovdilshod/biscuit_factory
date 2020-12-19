@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from api.warehouse.serializers.biscuit import WareHouseBiscuitCreateModelSerializer
-from apps.biscuit.models.biscuit import Biscuit
+from apps.biscuit.models.biscuit import Biscuit, PriceList
 from api.biscuit.serializers.biscuit import BiscuitModelSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response

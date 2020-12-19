@@ -1,6 +1,14 @@
+from decimal import Decimal
+
 from apps.product.models import AddManufacturedProduct, ProductPriceList, ManufacturedProduct
 from apps.recipe.models import ManufacturedProductRecipe
 
+
+def change_status_product():
+    produced_products = AddManufacturedProduct.objects.filter(for_price='un_calculate')
+    for produced_product in produced_products:
+        produced_product.for_price = 'calculated'
+        produced_product.save()
 
 def calculate_man_product_price():
     data = {'data':[
@@ -16,12 +24,9 @@ def calculate_man_product_price():
             product = recipe.product
             value = recipe.value
             product_price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
-            total_price = total_price + product_price * value * quantity
+            total_price = Decimal(total_price + product_price * value * quantity)/Decimal(quantity)
         data['data'].append({
             'product': product.id,
-            'total_price': total_price,
-            'quantity': quantity
+            'product_cost': total_price,
         })
-        obj.for_price = 'calculated'
-        obj.save()
     return data

@@ -48,7 +48,8 @@ INSTALLED_APPS = [
     'apps.biscuit',
     'apps.recipe',
     'apps.expense',
-    'apps.client'
+    'apps.client',
+    'apps.staff'
 ]
 
 MIDDLEWARE = [
@@ -132,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
 

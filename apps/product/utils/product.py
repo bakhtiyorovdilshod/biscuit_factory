@@ -31,6 +31,13 @@ def get_product_recipe(product):
         raise serializers.ValidationError('product recipe not found')
 
 
+def get_warehouse_manufactured_product_price(manufactured_product):
+    try:
+        return ManufacturedProductPriceList.objects.filter(product=manufactured_product).order_by('-id').first().price
+    except AttributeError:
+        raise serializers.ValidationError('product price  not found')
+
+
 def add_product(instance):
     warehouse_product_data = {}
     total_price = instance.quantity * instance.price

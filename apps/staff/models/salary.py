@@ -19,8 +19,13 @@ class StaffSalary(models.Model):
         ('given', 'given')
     )
     staff = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
+    biscuit_quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     salary = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
-    status = models.CharField(max_digits=20, choices=salary_status, default='not_given')
+    status = models.CharField(max_length=20, choices=salary_status, default='not_given')
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
 
     def __str(self):
         return str(self.staff)
+
+

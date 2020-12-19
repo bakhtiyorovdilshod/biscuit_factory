@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from apps.biscuit.models.biscuit import Biscuit
+from apps.biscuit.models.biscuit import Biscuit, PriceList
 
 
 class BiscuitModelSerializer(ModelSerializer):
@@ -17,3 +17,18 @@ class BiscuitModelSerializer(ModelSerializer):
         name = validated_data.pop('name')
         biscuit, _ = Biscuit.objects.get_or_create(name=name, **validated_data)
         return biscuit
+
+
+class BiscuitCostSerializer(ModelSerializer):
+    biscuit = BiscuitModelSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = PriceList
+        fields = [
+            'id',
+            'biscuit',
+            'price',
+            'currency',
+            'created_date',
+            'modified_date'
+        ]

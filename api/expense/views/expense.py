@@ -32,3 +32,10 @@ class QuantityExpenseModelViewSet(viewsets.ModelViewSet):
         product = self.get_object(pk)
         serializer = QuantityExpenseDetailModelSerializer(product, many=False)
         return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        expense = self.get_object(pk)
+        serializer = QuantityExpenseModelSerializer(expense, data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)

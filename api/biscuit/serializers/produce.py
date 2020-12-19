@@ -3,7 +3,7 @@ from api.user.serializers.user import AccountSerializer
 from apps.biscuit.models import ProduceBiscuit
 from rest_framework import serializers
 
-from apps.biscuit.utils.biscuit import get_biscuit_recipe, check_warehouse_product_quantity
+from apps.biscuit.utils.biscuit import get_biscuit_recipe, check_warehouse_product_quantity, get_biscuit_price
 from rest_framework.serializers import ValidationError
 
 
@@ -21,6 +21,7 @@ class ProduceBiscuitCreateSerializer(serializers.ModelSerializer):
         quantity = validated_data.get('quantity')
         staff = validated_data.get('staff')
         recipes = get_biscuit_recipe(biscuit)
+        price = get_biscuit_price(biscuit)
         if len(recipes)!=0:
             if check_warehouse_product_quantity(recipes, quantity) == len(recipes):
                 instance = ProduceBiscuit.objects.create(biscuit=biscuit, quantity=quantity, staff=staff)

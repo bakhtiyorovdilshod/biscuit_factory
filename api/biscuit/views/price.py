@@ -11,7 +11,7 @@ from collections import defaultdict
 import itertools
 from operator import itemgetter
 import operator
-import pandas as pd
+
 
 
 def test(data):

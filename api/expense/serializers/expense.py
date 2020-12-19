@@ -27,6 +27,7 @@ class QuantityExpenseDetailModelSerializer(ModelSerializer):
             'expense',
             'cost',
             'currency',
+            'status',
             'created_date',
             'modified_date'
         ]

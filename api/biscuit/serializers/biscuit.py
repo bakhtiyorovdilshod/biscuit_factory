@@ -25,7 +25,7 @@ class BiscuitModelSerializer(ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.price = validated_data.get('price', instance.price)
         instance.save()
-        obj = PriceList.objects.get(id=1)
+        obj = PriceList.objects.filter(biscuit__id=instance.id).first()
         obj.price = validated_data.get('price', instance.price)
         obj.save()
         return instance

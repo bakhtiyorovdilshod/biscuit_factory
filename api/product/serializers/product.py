@@ -59,7 +59,7 @@ class ManufacturedProductModelSerializer(ModelSerializer):
         instance.description = validated_data.get('description', instance.description)
         instance.price = validated_data.get('price', instance.price)
         instance.save()
-        obj = ManufacturedProductPriceList.objects.get(id=1)
+        obj = ManufacturedProductPriceList.objects.filter(product__id=instance.id).first()
         obj.price = validated_data.get('price', instance.price)
         obj.save()
         return instance

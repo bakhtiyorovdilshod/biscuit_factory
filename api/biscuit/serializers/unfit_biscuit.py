@@ -26,6 +26,5 @@ class UnfitBiscuitDetailSerializer(serializers.ModelSerializer):
             'quantity',
             'description',
             'total_price',
-            'date'
         ]
 

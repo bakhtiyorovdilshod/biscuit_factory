@@ -1,5 +1,6 @@
 from rest_framework.serializers import ModelSerializer
 
+from api.supplier.serializers.supplier import SupplierSerializer
 from apps.biscuit.utils.biscuit import check_warehouse_product_quantity
 from apps.product.models import ManufacturedProduct
 from apps.product.models.add_product import AddProduct, AddManufacturedProduct
@@ -20,6 +21,7 @@ class ProductAddListModelSerializer(ModelSerializer):
 
 class ProductAddDetailModelSerializer(ModelSerializer):
     product = ProductModelSerializer(read_only=True, many=False)
+    supplier = SupplierSerializer(read_only=True, many=False)
     class Meta:
         model = AddProduct
         fields = [
@@ -30,7 +32,6 @@ class ProductAddDetailModelSerializer(ModelSerializer):
             'price',
             'total_price',
             'supplier',
-            'warehouseman',
             'created_date'
         ]
 

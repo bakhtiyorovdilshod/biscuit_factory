@@ -1,1 +1,1 @@
-from .salary import SalaryPercentage, StaffSalary
+from .salary import SalaryQuantity, StaffSalary, StaffBiscuit,TechnologicalSalary

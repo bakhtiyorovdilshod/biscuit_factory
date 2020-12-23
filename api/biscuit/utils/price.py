@@ -10,6 +10,8 @@ from apps.recipe.models import BiscuitRecipe
 from rest_framework.serializers import ValidationError
 from collections import defaultdict
 
+from apps.staff.models import StaffSalary, TechnologicalSalary
+
 
 def get_biscuit_sale_price(biscuit):
     try:
@@ -31,6 +33,8 @@ def calculate_biscuit_price():
     ]}
     produced_biscuits = ProduceBiscuit.objects.filter(for_price='un_calculate')
     each_price_for_biscuit = Decimal(calculate_expense() / len(produced_biscuits))
+    staff_salary_for_biscuit = Decimal(staff_salary()/ len(produced_biscuits))
+    technological_man_salary = Decimal(technological_salary()/len(produced_biscuits))
     for produced_biscuit in produced_biscuits:
         total_price = 0
         biscuit = produced_biscuit.biscuit
@@ -40,7 +44,7 @@ def calculate_biscuit_price():
             product = recipe.product
             value = recipe.value
             product_price = get_product_price(product)
-            total_price = Decimal(total_price + product_price * value * quantity + each_price_for_biscuit)/Decimal(quantity)
+            total_price = Decimal(total_price + product_price * value * quantity + each_price_for_biscuit + staff_salary_for_biscuit + technological_man_salary)/Decimal(quantity)
         data['data'].append({
             'biscuit': biscuit.id,
             'biscuit_cost': total_price
@@ -57,5 +61,30 @@ def calculate_expense():
         expense.status = 'completed'
         expense.save()
     return total_price
+
+
+def staff_salary():
+    total_price = 0
+    staff_salaries = StaffSalary.objects.filter(status='not_given')
+    for staff_salary in staff_salaries:
+        price = staff_salary.salary
+        total_price = total_price + price
+        staff_salary.status = 'calculated'
+        staff_salary.save()
+    return total_price
+
+
+def technological_salary():
+    total_price = 0
+    staff_salaries = TechnologicalSalary.objects.filter(status='not_given')
+    for staff_salary in staff_salaries:
+        price = staff_salary.salary
+        total_price = total_price + price
+        staff_salary.status = 'calculated'
+        staff_salary.save()
+    return total_price
+
+
+
 
 

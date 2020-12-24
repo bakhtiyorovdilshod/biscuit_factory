@@ -16,7 +16,7 @@ class BiscuitModelSerializer(ModelSerializer):
     def create(self, validated_data):
         name = validated_data.pop('name')
         price = validated_data.pop('price')
-        biscuit, _ = Biscuit.objects.get_or_create(name=name, **validated_data)
+        biscuit, _ = Biscuit.objects.get_or_create(name=name, price=price, **validated_data)
         PriceList.objects.create(biscuit=biscuit, price=price)
         return biscuit
 

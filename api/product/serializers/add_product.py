@@ -16,7 +16,8 @@ class ProductAddListModelSerializer(ModelSerializer):
             'product',
             'quantity',
             'currency',
-            'price'
+            'price',
+            'supplier'
         ]
 
 

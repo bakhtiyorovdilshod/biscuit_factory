@@ -4,7 +4,8 @@ from api.supplier.serializers.supplier import SupplierSerializer
 from apps.biscuit.utils.biscuit import check_warehouse_product_quantity
 from apps.product.models import ManufacturedProduct
 from apps.product.models.add_product import AddProduct, AddManufacturedProduct
-from api.product.serializers.product import ProductModelSerializer, ManufacturedProductModelSerializer
+from api.product.serializers.product import ProductModelSerializer, ManufacturedProductModelSerializer, \
+    ProductDetailSerializer
 from rest_framework.serializers import ValidationError
 
 
@@ -20,7 +21,7 @@ class ProductAddListModelSerializer(ModelSerializer):
 
 
 class ProductAddDetailModelSerializer(ModelSerializer):
-    product = ProductModelSerializer(read_only=True, many=False)
+    product = ProductDetailSerializer(read_only=True, many=False)
     supplier = SupplierSerializer(read_only=True, many=False)
     class Meta:
         model = AddProduct

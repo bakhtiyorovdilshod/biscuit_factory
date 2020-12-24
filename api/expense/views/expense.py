@@ -25,7 +25,8 @@ class QuantityExpenseModelViewSet(viewsets.ModelViewSet):
             raise ValidationError('not found')
 
     def list(self, request):
-        serializer = QuantityExpenseDetailModelSerializer(self.queryset, many=True)
+        queryset = QuantityExpense.objects.all()
+        serializer = QuantityExpenseDetailModelSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk):

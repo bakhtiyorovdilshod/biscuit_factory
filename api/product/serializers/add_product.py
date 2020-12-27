@@ -69,7 +69,6 @@ class ManufacturedProductAddListModelSerializer(ModelSerializer):
 
 
 
-
 class ManufacturedProductAddDetailModelSerializer(ModelSerializer):
     product = ManufacturedProductModelSerializer(read_only=True, many=False)
 

@@ -1,7 +1,7 @@
 from decimal import Decimal
 
 from api.user.serializers.user import AccountSerializer
-from apps.staff.models import SalaryQuantity, StaffSalary, StaffBiscuit
+from apps.staff.models import SalaryQuantity, StaffSalary, StaffBiscuit, TechnologicalSalary
 from rest_framework.serializers import ModelSerializer
 
 from apps.staff.utils.salary import get_staff_user, check_biscuit_price_for_staff
@@ -77,6 +77,22 @@ class StaffBiscuitSerializer(ModelSerializer):
         staff_salary.set_total_price()
         staff_salary.save()
         return instance
+
+
+class TechnologicalSalarySerializer(ModelSerializer):
+    staff = AccountSerializer(read_only=True, many=False)
+    
+    class Meta:
+        model = TechnologicalSalary
+        fields = [
+            'id',
+            'staff',
+            'biscuit_quantity',
+            'salary',
+            'status',
+            'created_date',
+            'modified_date'
+        ]
 
 
 

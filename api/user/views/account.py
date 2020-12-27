@@ -8,6 +8,8 @@ from api.user.serializers.user import AccountSerializer
 
 from api.user.utils.role import account_role
 from apps.user.models import Account
+from rest_framework.viewsets import ModelViewSet
+from rest_framework.serializers import ValidationError
 
 User = get_user_model()
 
@@ -92,3 +94,26 @@ class FilterUserAPIView(APIView):
             return Response({'error': 404})
         serializer = AccountSerializer(accounts, many=True)
         return Response(serializer.data)
+
+
+class AccountListAPIView(ModelViewSet):
+    queryset = Account.objects.all()
+    serializer_class = AccountSerializer
+
+    def get_object(self, pk):
+        try:
+            return Account.objects.get(id=pk)
+        except Account.DoesNotExist:
+            raise ValidationError('object not found')
+
+    def list(self, request):
+        queryset = Account.objects.all()
+        serializer = AccountSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request,pk):
+        queryset = self.get_object(pk)
+        serializer = AccountSerializer(queryset, many=False)
+        return Response(serializer.data)
+
+

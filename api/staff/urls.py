@@ -14,7 +14,8 @@ urlpatterns = [
     path('salary/', include(router.urls)),
     path('biscuit/', include(router_two.urls)),
     path('salary/list/', StaffSalaryListAPIView.as_view(), name='staff salary list'),
-    path('salary/detail/<int:pk>/', StaffSalaryDetailAPIView.as_view(), name='staff salary detail')
+    path('salary/detail/<int:pk>/', StaffSalaryDetailAPIView.as_view(), name='staff salary detail'),
+    path('technology/salary/', TechnologicalSalaryAPIView.as_view())
 
 ]
 

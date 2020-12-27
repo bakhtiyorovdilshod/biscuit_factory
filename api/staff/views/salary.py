@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.views import APIView
 
 from api.staff.serializers.salary import SalaryPercentageModelSerializer, StaffSalaryModelSerializer, \
-    StaffBiscuitSerializer
-from apps.staff.models import SalaryQuantity, StaffSalary, StaffBiscuit
+    StaffBiscuitSerializer, TechnologicalSalarySerializer, StaffSalaryDetailModelSerializer
+from apps.staff.models import SalaryQuantity, StaffSalary, StaffBiscuit, TechnologicalSalary
 from apps.user.models import Account
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
@@ -30,7 +30,7 @@ class StaffSalaryListAPIView(APIView):
     def get(self, request):
         account = self.get_account(request.user)
         queryset = StaffSalary.objects.filter(staff=account)
-        serializer = StaffSalaryModelSerializer(queryset, many=True)
+        serializer = StaffSalaryDetailModelSerializer(queryset, many=True)
         return Response(serializer.data)
 
 
@@ -43,8 +43,16 @@ class StaffSalaryDetailAPIView(APIView):
 
     def get(self, request, pk):
         queryset = self.get_object(pk)
-        serializer = StaffSalaryModelSerializer(queryset, many=False)
+        serializer = StaffSalaryDetailModelSerializer(queryset, many=False)
         return Response(serializer.data)
+
+
+class TechnologicalSalaryAPIView(APIView):
+    def get(self, request):
+        queryset = TechnologicalSalary.objects.all().order_by('-id')
+        serializer = TechnologicalSalarySerializer(queryset, many=True)
+        return Response(serializer.data)
+
 
 
 

@@ -1,5 +1,6 @@
+from api.product.serializers.sub_product import SubProductModelSerializer
 from apps.biscuit.models import Biscuit, ProduceBiscuitLog, PriceList
-from apps.product.models import AddProduct, ProductPriceList
+from apps.product.models import AddProduct, ProductPriceList, SubProduct
 from apps.recipe.models import BiscuitRecipe
 
 from django.http import Http404
@@ -78,6 +79,15 @@ def add_product(instance):
             warehouse.quantity -= quantity_value
             warehouse.total_price -= new_total_price
             warehouse.save()
+            data ={}
+            data['log_id'] = instance.id
+            data['product'] = product.id
+            data['quantity'] = quantity_value
+            data['price'] = price
+            data['total_price'] = new_total_price
+            serializer = SubProductModelSerializer(data=data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
     if check_warehouse_product_quantity(recipe, instance.quantity)==len(recipe):
         ware_biscuit.add_quantity(instance.quantity)
         ware_biscuit.set_total_price()
@@ -92,6 +102,14 @@ def sub_product(instance):
     biscuit = get_biscuit(obj.biscuit.id)
     recipe = get_biscuit_recipe(biscuit)
     ware_biscuit = get_warehouse_biscuit(biscuit)
+    data = {}
+    data['product'] = instance.product
+    data['quantity'] = instance.quantity
+    data['total_price'] = get_product_price(instance.product) * instance.quantity
+    sub_obj = SubProduct.objects.filter(log_id=instance.id)
+    serializer = SubProductModelSerializer(sub_obj, data=data)
+    serializer.is_valid(raise_exception=True)
+    serializer.save()
     if check_warehouse_product_quantity(recipe, instance.quantity) == len(recipe):
         ware_biscuit.subtract_quantity(obj.quantity)
         ware_biscuit.set_total_price()

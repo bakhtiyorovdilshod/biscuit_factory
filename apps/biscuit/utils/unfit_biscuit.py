@@ -12,6 +12,7 @@ def get_or_create_unfit_biscuit(biscuit, status):
     except WareHouseProduct.DoesNotExist:
         raise serializers.ValidationError('warehouse product not found')
 
+
 def add_quantity_unfit_biscuit(instance):
     unfit_biscuit, _ = get_or_create_unfit_biscuit(instance.biscuit, instance.status)
     recipe = get_biscuit_recipe(instance.biscuit)

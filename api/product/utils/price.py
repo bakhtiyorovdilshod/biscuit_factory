@@ -17,16 +17,17 @@ def calculate_man_product_price():
     products = AddManufacturedProduct.objects.filter(for_price='un_calculate')
     for obj in products:
         total_price = 0
-        product = obj.product
+        man_product = obj.product
         quantity = obj.quantity
-        recipes = ManufacturedProductRecipe.objects.filter(manufactured_product=product)
+        recipes = ManufacturedProductRecipe.objects.filter(manufactured_product=man_product)
         for recipe in recipes:
             product = recipe.product
             value = recipe.value
             product_price = ProductPriceList.objects.filter(product=product).order_by('-id').first().price
             total_price = Decimal(total_price + product_price * value * quantity)/Decimal(quantity)
         data['data'].append({
-            'product': product.id,
+            'product': man_product.id,
             'product_cost': total_price,
         })
+        print(product.id)
     return data

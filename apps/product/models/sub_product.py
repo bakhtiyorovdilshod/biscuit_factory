@@ -12,7 +12,6 @@ class SubProduct(models.Model):
         ('SOM', 1),
         ('USD', 2)
     )
-    log_id = models.PositiveIntegerField(default=0)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=4, default=decimal.Decimal(0))
     currency = models.CharField(max_length=20, choices=type_currency, default='SOM')

@@ -87,7 +87,7 @@ class SaleBiscuitPriceAPIView(APIView):
         try:
             biscuit = data['biscuit']
         except KeyError:
-            raise ValidationError('biscuit not found')
+            raise ValidationError('pecheneni topilmadi!')
         default_price = get_biscuit_price(biscuit)
         data['default_price'] = default_price
         serializer = SaleBiscuitPriceModelSerializer(data=data)
@@ -114,7 +114,7 @@ class SaleBiscuitPriceDetailAPIView(APIView):
         try:
             biscuit = data['biscuit']
         except KeyError:
-            raise ValidationError('biscuit not found')
+            raise ValidationError('pecheneni topilmadi!')
         default_price = get_biscuit_price(biscuit)
         data['default_price'] = default_price
         queryset = self.get_object(pk)

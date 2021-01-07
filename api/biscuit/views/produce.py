@@ -40,6 +40,11 @@ class ProduceBiscuitModelViewSet(viewsets.ModelViewSet):
         serializer.save()
         return Response(serializer.data)
 
+    def retrieve(self, request, pk):
+        queryset = self.get_object(pk)
+        serializer = ProduceBiscuitSerializer(queryset, many=False)
+        return Response(serializer.data)
+
 
 class FilterProduceBiscuit(ListAPIView):
     queryset = ProduceBiscuit.objects.all()

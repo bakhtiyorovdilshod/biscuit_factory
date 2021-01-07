@@ -17,7 +17,6 @@ class ProduceBiscuit(models.Model):
     )
     biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
     quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
-    staff = models.ForeignKey(Account, on_delete=models.CASCADE, blank=True, null=True)
     currency = models.CharField(default='so\'m', max_length=200, blank=True, null=True)
     status = models.CharField(max_length=50, choices=status_type, default='unpaid', blank=True, null=True)
     for_price= models.CharField(max_length=50, choices=type_of_calculate, default='un_calculate')

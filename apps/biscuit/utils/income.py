@@ -19,7 +19,7 @@ def get_reserve_money(pk):
     except ReserveMoney.DoesNotExist:
         raise serializers.ValidationError(' reserve money not found')
 
-def get_icome(pk):
+def get_income(pk):
     try:
         return Income.objects.get(pk=pk)
     except Income.DoesNotExist:

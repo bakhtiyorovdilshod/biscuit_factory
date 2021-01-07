@@ -18,7 +18,7 @@ class BiscuitModelViewSet(viewsets.ModelViewSet):
         try:
             return Biscuit.objects.get(pk=pk)
         except Biscuit.DoesNotExist:
-            raise ValidationError('biscuit not found')
+            raise ValidationError('pecheneni topilmadi!')
 
     def create(self, request, *args, **kargs):
         data = request.data

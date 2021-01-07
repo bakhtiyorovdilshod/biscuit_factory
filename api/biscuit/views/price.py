@@ -33,7 +33,7 @@ class CalculateBiscuitPrice(APIView):
             change_status()
             return Response({'status': 200})
         else:
-            raise ValidationError('do not have produced biscuits')
+            raise ValidationError('pechene ishlab chiqarilmagan!')
 
 
 class BiscuitCostAPIView(APIView):

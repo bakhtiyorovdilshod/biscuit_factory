@@ -60,7 +60,7 @@ class StaffBiscuitSerializer(ModelSerializer):
             instance = StaffBiscuit.objects.create(staff=staff, biscuit_quantity=biscuit_quantity, status='calculated')
             return instance
         else:
-            raise ValidationError('biscuit cost for staff not found')
+            raise ValidationError('Ishchi xodimlar uchun pechene narxi topilmadi!')
 
     def update(self, instance, validated_data):
         staff = validated_data['staff']

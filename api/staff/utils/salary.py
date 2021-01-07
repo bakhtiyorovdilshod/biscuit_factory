@@ -24,7 +24,6 @@ def technological_salary_update(instance, new_quantity):
     staff_salary.subtract_quantity(instance.quantity)
     staff_salary.set_total_price()
     staff_salary.save()
-    staff_salary = TechnologicalSalary.objects.filter(status='not_given').first()
     staff_salary.add_quantity(new_quantity)
     staff_salary.set_total_price()
     staff_salary.save()

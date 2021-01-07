@@ -12,6 +12,20 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class AccountSerializer(serializers.ModelSerializer):
+    # user = UserSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = Account
+        fields = [
+            'user',
+            'first_name',
+            'last_name',
+            'address',
+            'gender'
+        ]
+
+
+class AccountListSerializer(serializers.ModelSerializer):
     user = UserSerializer(read_only=True, many=False)
 
     class Meta:

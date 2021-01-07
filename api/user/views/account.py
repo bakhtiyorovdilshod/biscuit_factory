@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 from django.contrib.auth import authenticate
-from api.user.serializers.user import AccountSerializer
+from api.user.serializers.user import AccountSerializer, AccountListSerializer
 
 from api.user.utils.role import account_role
 from apps.user.models import Account
@@ -98,7 +98,7 @@ class FilterUserAPIView(APIView):
 
 class AccountListAPIView(ModelViewSet):
     queryset = Account.objects.all()
-    serializer_class = AccountSerializer
+    serializer_class = AccountListSerializer
 
     def get_object(self, pk):
         try:

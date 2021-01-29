@@ -30,6 +30,7 @@ class SaleBiscuitModelSerializer(serializers.ModelSerializer):
 
         if check_warehouse_biscuit_quantity(ware_biscuit, quantity)==False:
             raise ValidationError('Mahsulot yetarli emas!')
+        return attrs
 
     def create(self, validated_data):
         biscuit = validated_data.get('biscuit')

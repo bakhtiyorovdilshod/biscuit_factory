@@ -1,8 +1,9 @@
 from rest_framework import viewsets
 
 from api.warehouse.serializers.biscuit import WareHouseBiscuitCreateModelSerializer
-from apps.biscuit.models.biscuit import Biscuit, PriceList
-from api.biscuit.serializers.biscuit import BiscuitModelSerializer
+from apps.biscuit.models.biscuit import Biscuit, PriceList, ReturnBiscuit
+from api.biscuit.serializers.biscuit import BiscuitModelSerializer, ReturnBiscuitSerializer, \
+    ReturnDetailBiscuitCostSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.http import Http404
@@ -37,4 +38,19 @@ class BiscuitModelViewSet(viewsets.ModelViewSet):
     def retrieve(self, request, pk):
         biscuit = self.get_object(pk)
         serializer = BiscuitModelSerializer(biscuit, many=False)
+        return Response(serializer.data)
+
+
+class ReturnBiscuitModelViewSet(viewsets.ModelViewSet):
+    queryset = ReturnBiscuit.objects.all()
+    serializer_class = ReturnBiscuitSerializer
+    permission_classes = (IsAuthenticated,)
+
+    def list(self, request, *args, **kwargs):
+        serializer = ReturnDetailBiscuitCostSerializer(self.queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk, *args, **kwargs):
+        queryset = self.get_object()
+        serializer = ReturnDetailBiscuitCostSerializer(queryset, many=False)
         return Response(serializer.data)

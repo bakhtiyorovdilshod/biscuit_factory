@@ -26,5 +26,6 @@ urlpatterns = [
     path('api/v1/recipe/', include('api.recipe.urls')),
     path('api/v1/expense/', include('api.expense.urls')),
     path('api/v1/client/', include('api.client.urls')),
-    path('api/v1/staff/', include('api.staff.urls'))
+    path('api/v1/staff/', include('api.staff.urls')),
+    path('api/v1/order/', include('api.order.urls'))
 ]

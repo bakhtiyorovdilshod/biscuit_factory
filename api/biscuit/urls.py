@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework.routers import SimpleRouter
 
-from api.biscuit.views.biscuit import BiscuitModelViewSet
+from api.biscuit.views.biscuit import BiscuitModelViewSet, ReturnBiscuitModelViewSet
 from api.biscuit.views.price import CalculateBiscuitPrice, BiscuitCostAPIView
 
 from api.biscuit.views.produce import ProduceBiscuitModelViewSet, FilterProduceBiscuit
@@ -17,6 +17,8 @@ router_api = SimpleRouter()
 router_api_sale = SimpleRouter()
 router_api.register('produce', ProduceBiscuitModelViewSet)
 router_api_sale.register('sale', SaleBiscuitModelViewSet)
+router_return = SimpleRouter()
+router_return.register('return', ReturnBiscuitModelViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -28,7 +30,8 @@ urlpatterns = [
     path('take/price/', CalculateBiscuitPrice.as_view(), name='take biscuit price'),
     path('sale/price/', SaleBiscuitPriceAPIView.as_view(), name='put sale biscuit price'),
     path('sale/price/<int:pk>/', SaleBiscuitPriceDetailAPIView.as_view(), name='detail sale biscuit price'),
-    path('default/cost/', BiscuitCostAPIView.as_view(), name='biscuit cost')
+    path('default/cost/', BiscuitCostAPIView.as_view(), name='biscuit cost'),
+    path('biscuits/', include(router_return.urls) )
 
 
 ]

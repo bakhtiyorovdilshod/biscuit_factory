@@ -24,3 +24,14 @@ class PriceList(models.Model):
 
     def __str__(self):
         return str(self.biscuit)
+
+
+class ReturnBiscuit(models.Model):
+    biscuit = models.ForeignKey(Biscuit, on_delete=models.CASCADE)
+    comment = models.TextField()
+    quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return str(self.biscuit)

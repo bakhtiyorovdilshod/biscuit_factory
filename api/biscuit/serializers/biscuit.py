@@ -1,5 +1,11 @@
 from rest_framework.serializers import ModelSerializer
-from apps.biscuit.models.biscuit import Biscuit, PriceList
+
+from apps.biscuit.models import SaleBiscuitPrice, BuyingBiscuit
+from apps.biscuit.models.biscuit import Biscuit, PriceList, ReturnBiscuit
+from decimal import Decimal
+
+from apps.biscuit.utils.biscuit import get_biscuit
+from apps.warehouse.models import WareHouseBiscuit
 
 
 class BiscuitModelSerializer(ModelSerializer):
@@ -44,3 +50,37 @@ class BiscuitCostSerializer(ModelSerializer):
             'created_date',
             'modified_date'
         ]
+
+
+class ReturnDetailBiscuitCostSerializer(ModelSerializer):
+    biscuit = BiscuitModelSerializer(read_only=True, many=False)
+
+    class Meta:
+        model = ReturnBiscuit
+        fields = [
+            'id',
+            'biscuit',
+            'comment',
+            'quantity',
+            'created_date',
+            'modified_date'
+        ]
+
+
+class ReturnBiscuitSerializer(ModelSerializer):
+    class Meta:
+        model = ReturnBiscuit
+        fields = "__all__"
+
+    def create(self, validated_data):
+        biscuit = validated_data['biscuit']
+        # biscuit = get_biscuit(biscuit).id
+        quantity = validated_data['quantity']
+        comment = validated_data['comment']
+        ware_house_biscuit = WareHouseBiscuit.objects.filter(biscuit=biscuit).first()
+        ware_house_biscuit.add_quantity(Decimal(quantity))
+        ware_house_biscuit.set_total_price()
+        ware_house_biscuit.set_average_price()
+        ware_house_biscuit.save()
+        instance = ReturnBiscuit.objects.create(biscuit=biscuit, quantity=quantity, comment=comment)
+        return instance

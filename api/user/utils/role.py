@@ -23,6 +23,7 @@ def account_role(user_role, user_id):
     elif user_role == 'driver':
         user.is_driver = True
         user.save()
+        return True
     elif user_role == 'manager':
         user.is_manager = True
         user.save()

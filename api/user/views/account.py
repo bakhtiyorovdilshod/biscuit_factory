@@ -111,9 +111,9 @@ class AccountListAPIView(ModelViewSet):
         serializer = AccountListSerializer(queryset, many=True)
         return Response(serializer.data)
 
-    def retrieve(self, request,pk):
+    def retrieve(self, request, pk):
         queryset = self.get_object(pk)
-        serializer = AccountSerializer(queryset, many=False)
+        serializer = AccountListSerializer(queryset, many=False)
         return Response(serializer.data)
 
 

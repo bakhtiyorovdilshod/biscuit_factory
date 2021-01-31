@@ -17,6 +17,7 @@ class AccountSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = [
+            'id',
             'user',
             'first_name',
             'last_name',
@@ -31,6 +32,7 @@ class AccountListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Account
         fields = [
+            'id',
             'user',
             'first_name',
             'last_name',

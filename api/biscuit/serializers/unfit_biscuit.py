@@ -19,13 +19,13 @@ class UnfitBiscuitCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if not attrs.get('biscuit'):
-            raise ValidationError({'error': 'Biscuit not found'})
+            raise ValidationError({'xatolik': 'pechene topilmadi'})
         if not attrs.get('quantity'):
-            raise ValidationError({'error': 'quantity not found'})
+            raise ValidationError({'xatolik': 'miqdori topilmadi'})
         if not attrs.get('status'):
-            raise ValidationError({'error': 'status not found'})
+            raise ValidationError({'xatoli': 'holat topilmadi'})
         if not attrs.get('description'):
-            raise ValidationError({'error': 'description not found'})
+            raise ValidationError({'xatolik': 'tavsif topilmadi'})
         return attrs
 
     def create(self, validated_data):

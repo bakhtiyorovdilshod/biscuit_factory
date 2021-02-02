@@ -22,15 +22,15 @@ class ProduceBiscuitCreateSerializer(serializers.ModelSerializer):
 
     def validate(self, attrs):
         if not attrs.get('biscuit'):
-            raise ValidationError({'error': 'biscuit not found'})
+            raise ValidationError({'xatolik': 'pechene topilmadi'})
 
         if not attrs.get('quantity'):
-            raise ValidationError({'error': 'quantity not found'})
+            raise ValidationError({'xatolik': 'miqdori topilmadi'})
         recipes = get_biscuit_recipe(attrs.get('biscuit'))
         quantity = attrs.get('quantity')
         check_price = check_biscuit_price_for_staff('technological_man')
         if not Account.objects.filter(user__is_chief_technological_man=True).exists():
-            raise ValidationError({'error': 'chief_technological_man not found'})
+            raise ValidationError({'xatolik': 'bosh_texnologik_bol topilmadi'})
         if len(recipes) == 0:
             raise ValidationError({'error': 'Ushbu pecheneni retsepti kiritilmagan!'})
         if check_warehouse_product_quantity(recipes, quantity)!= len(recipes):

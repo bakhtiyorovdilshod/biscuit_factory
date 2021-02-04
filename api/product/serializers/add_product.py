@@ -99,9 +99,9 @@ class ManufacturedProductAddListModelSerializer(ModelSerializer):
             raise ValidationError({'error': 'quantity not found'})
         recipes = get_product_recipe(attrs.get('product'))
         if check_warehouse_product_quantity(recipes, attrs.get('quantity'))!=len(recipes):
-            raise ValidationError({'error': 'not enough products in warehouse'})
+            raise ValidationError({'xatolik': 'omborda yetarli mahsulot yoq'})
         if len(recipes)==0:
-            raise ValidationError({'error': 'Product Recipe not found'})
+            raise ValidationError({'xatolik': 'Mahsulot retsepti topilmadi'})
         return attrs
 
     def create(self, validated_data):
@@ -152,4 +152,4 @@ class ManufacturedProductUpdateModelSerializer(ModelSerializer):
             instance.save()
             return instance
         else:
-            raise ValidationError('not enough products in warehouse')
+            raise ValidationError('omborda yetarli mahsulot yoq')

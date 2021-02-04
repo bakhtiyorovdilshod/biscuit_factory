@@ -28,7 +28,6 @@ class CalculateProductPrice(APIView):
             for i in product_data:
                 price = 0
                 product = i['product']
-                print(product)
                 product = get_manufactured_product(product)
                 total_price = i['product_cost']
                 number = AddManufacturedProduct.objects.filter(for_price='un_calculate', product=product)

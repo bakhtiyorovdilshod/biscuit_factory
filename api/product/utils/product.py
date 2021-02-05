@@ -4,6 +4,7 @@ from api.warehouse.serializers.add_product import ProductAddUpdateModelSerialize
 from apps.biscuit.utils.biscuit import get_warehouse_product, get_product_price
 from apps.product.models import ProductPriceList
 from apps.product.utils.product import get_warehouse_manufactured_product, get_product_recipe
+from apps.warehouse.models import WareHouseProduct
 
 
 def add_product_to_warehouse(validated_data):
@@ -11,12 +12,13 @@ def add_product_to_warehouse(validated_data):
     total_price = validated_data.get('quantity') * validated_data.get('price')
     warehouse_product_data['quantity'] = Decimal(validated_data.get('quantity'))
     product = validated_data.get('product')
-    warehouse_serializer = ProductAddUpdateModelSerializer(product, data=warehouse_product_data)
+    instance = WareHouseProduct.objects.filter(product=product).first()
+    warehouse_serializer = ProductAddUpdateModelSerializer(instance, data=warehouse_product_data)
     warehouse_serializer.is_valid(raise_exception=True)
     warehouse_serializer.save()
-    product.total_price += Decimal(total_price)
-    product.set_average_price()
-    product.save()
+    instance.total_price += Decimal(total_price)
+    instance.set_average_price()
+    instance.save()
     ProductPriceList.objects.create(product=product, price=Decimal(validated_data.get('price')))
 
 

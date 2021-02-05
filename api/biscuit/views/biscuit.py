@@ -47,7 +47,8 @@ class ReturnBiscuitModelViewSet(viewsets.ModelViewSet):
     permission_classes = (IsAuthenticated,)
 
     def list(self, request, *args, **kwargs):
-        serializer = ReturnDetailBiscuitCostSerializer(self.queryset, many=True)
+        queryset = ReturnBiscuit.objects.all()
+        serializer = ReturnDetailBiscuitCostSerializer(queryset, many=True)
         return Response(serializer.data)
 
     def retrieve(self, request, pk, *args, **kwargs):

@@ -46,6 +46,8 @@ class StaffBiscuitSerializer(ModelSerializer):
         if check_price == False:
             raise ValidationError('Ishchi xodimlar uchun pechene narxi topilmadi!')
 
+        return attrs
+
     def create(self, validated_data):
         staff = validated_data['staff']
         biscuit_quantity = validated_data['biscuit_quantity']

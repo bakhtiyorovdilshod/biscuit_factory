@@ -15,13 +15,14 @@ def get_biscuit_cost(biscuit):
 
 def get_reserve_money(pk):
     try:
-        return ReserveMoney.objects.get(pk=pk)
+        return ReserveMoney.objects.get_or_create(pk=1)
     except ReserveMoney.DoesNotExist:
-        raise serializers.ValidationError(' reserve money not found')
+        raise serializers.ValidationError('zaxira pul topilmadi')
+
 
 def get_income(pk):
     try:
-        return Income.objects.get(pk=pk)
+        return Income.objects.get_or_create(pk=1)
     except Income.DoesNotExist:
         raise serializers.ValidationError('income not found')
 
@@ -33,8 +34,8 @@ def biscuit_income(instance):
     total_income = Decimal(total_price - (quantity * cost))
     for_one_biscuit_income = Decimal(total_income/quantity)
     IncomeBiscuit.objects.create(income=for_one_biscuit_income, biscuit=instance.biscuit)
-    obj = get_icome(1)
-    reserve = get_reserve_money(1)
+    obj,_ = get_income(1)
+    reserve,_ = get_reserve_money(1)
     percentage = reserve.percentage
     reserve.total_price = reserve.total_price + Decimal((percentage*for_one_biscuit_income/Decimal(100)))
     obj.total_price = obj.total_price + total_income

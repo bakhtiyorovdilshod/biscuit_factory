@@ -54,6 +54,7 @@ class SaleBiscuitModelSerializer(serializers.ModelSerializer):
         instance.client = validated_data.get('client', instance.client)
         instance.sale_price = validated_data.get('sale_price', instance.sale_price)
         instance.total_price = Decimal(validated_data.get('quantity')) * Decimal(validated_data.get('sale_price'))
+        instance.status = validated_data.get('status', instance.status)
         instance.save()
         return instance
 

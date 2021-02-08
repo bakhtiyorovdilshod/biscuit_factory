@@ -21,6 +21,7 @@ class BuyingBiscuit(models.Model):
     quantity = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     currency = models.CharField(default='so\'m', max_length=200)
     total_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
+    sale_price = models.DecimalField(max_digits=20, decimal_places=2, default=decimal.Decimal(0))
     comment = models.TextField(max_length=300, blank=True, null=True)
     payment_type = models.CharField(max_length=200, default='cash', choices=payment_types)
     client = models.ForeignKey(Client, on_delete=models.CASCADE)

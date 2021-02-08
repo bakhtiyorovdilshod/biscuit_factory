@@ -5,6 +5,7 @@ from api.biscuit.utils.biscuit import sale_biscuit_to_client, sale_biscuit_to_cl
 from api.client.serializers.client import ClientModelSerializer
 from apps.biscuit.models.sale import BuyingBiscuit, SaleBiscuitPrice
 from rest_framework.serializers import ValidationError
+from decimal import Decimal
 
 
 class SaleBiscuitModelSerializer(serializers.ModelSerializer):
@@ -38,7 +39,9 @@ class SaleBiscuitModelSerializer(serializers.ModelSerializer):
         comment = validated_data.get('comment')
         payment_type = validated_data.get('payment_type')
         client = validated_data.get('client')
-        instance = BuyingBiscuit.objects.create(biscuit=biscuit, quantity=quantity, comment=comment, payment_type=payment_type, client=client)
+        sale_price = validated_data.get('sale_price', None)
+        total_price = Decimal(sale_price) * Decimal(quantity)
+        instance = BuyingBiscuit.objects.create(biscuit=biscuit, quantity=quantity, comment=comment, payment_type=payment_type, client=client,sale_price=sale_price,total_price=total_price)
         sale_biscuit_to_client(validated_data)
         return instance
 
@@ -49,6 +52,8 @@ class SaleBiscuitModelSerializer(serializers.ModelSerializer):
         instance.comment = validated_data.get('comment', instance.comment)
         instance.payment_type = validated_data.get('payment_type', instance.payment_type)
         instance.client = validated_data.get('client', instance.client)
+        instance.sale_price = validated_data.get('sale_price', instance.sale_price)
+        instance.total_price = Decimal(validated_data.get('quantity')) * Decimal(validated_data.get('sale_price'))
         instance.save()
         return instance
 

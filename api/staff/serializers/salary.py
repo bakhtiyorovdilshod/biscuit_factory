@@ -65,6 +65,10 @@ class StaffBiscuitSerializer(ModelSerializer):
         instance = StaffBiscuit.objects.create(staff=staff, biscuit_quantity=biscuit_quantity, status='calculated')
         return instance
 
+    def to_representation(self, instance):
+        self.fields['staff'] = AccountSerializer(read_only=True, many=False)
+        return super(StaffBiscuitSerializer, self).to_representation(instance)
+
     def update(self, instance, validated_data):
         staff = validated_data['staff']
         biscuit_quantity = validated_data['biscuit_quantity']
